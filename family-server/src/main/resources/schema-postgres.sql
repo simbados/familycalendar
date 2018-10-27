@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS member;
+CREATE TABLE member(id serial PRIMARY KEY, surname VARCHAR(100), name VARCHAR(100));
