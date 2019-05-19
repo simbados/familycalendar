@@ -8,27 +8,27 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-/*injects DAO objects by constructor & implements BasicCrud interface*/
-class MemberService(val memberDAO: MemberDAO):BasicCrud<String,Member> {
 
-    override fun getAll(pageable: Pageable): Page<Member> = memberDAO.findAll(pageable)
+class MemberService(val DAOLayer: DAOLayer):BasicCrud<String,Member> {
 
-    override fun getById(id: String): Optional<Member> = memberDAO.findById(id)
+    override fun getAll(pageable: Pageable): Page<Member> = DAOLayer.findAll(pageable)
 
-    override fun insert(obj: Member): Member = memberDAO.insert(obj)
+    override fun getById(id: String): Optional<Member> = DAOLayer.findById(id)
+
+    override fun insert(obj: Member): Member = DAOLayer.insert(obj)
 
     @Throws(Exception::class)
     override fun update(obj: Member): Member {
-      return if(memberDAO.existsById(obj.id)){
-        memberDAO.save(obj)
+      return if(DAOLayer.existsById(obj.id)){
+        DAOLayer.save(obj)
         } else {
           throw object: Exception("Member not found"){}
         }
       }
     
     override fun deleteById(id: String): Optional<Member> {
-      return memberDAO.findById(id).apply {
-        this.ifPresent{ memberDAO.delete(it)}
+      return DAOLayer.findById(id).apply {
+        this.ifPresent{ DAOLayer.delete(it)}
       }
     }
 }
